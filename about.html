@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - Modern Interactive Periodic Table</title>
-    <meta name="description" content="Welcome to the Modern Interactive Periodic Table by Rifatuzzaman & Urfa Hasan Fattah. Explore elements, filter categories, and learn chemistry interactively.">
-    <meta name="keywords" content="periodic table, interactive chemistry, modern periodic table, rifatuzzaman, urfa hasan fattah">
+    <title>About - Modern Interactive Periodic Table</title>
+    <meta name="description" content="Learn about the Modern Interactive Periodic Table, created by Rifatuzzaman & Urfa Hasan Fattah, and the story behind this chemistry project.">
+    <meta name="keywords" content="about periodic table, rifatuzzaman, urfa hasan fattah, interactive chemistry">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Montserrat:wght@800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-        /* Reuse styles from index.html */
+        /* Reuse styles from other pages */
         body {
             background: linear-gradient(0deg, #1e3c72, #2a5298);
             font-family: 'Roboto', sans-serif;
@@ -24,13 +24,13 @@
         }
         h1 {
             font-family: 'Montserrat', sans-serif;
-            font-size: 80px;
+            font-size: 60px;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 3px;
             margin: 20px 0;
             text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-            animation: fadeIn 1s ease-in; /* Added fade-in animation */
+            animation: fadeIn 1s ease-in; /* Fade-in animation */
         }
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -38,27 +38,36 @@
         }
         h2 {
             font-size: 24px;
-            font-weight: 400;
-            margin: 10px 0 30px;
-            color: rgba(255, 255, 255, 0.9);
+            font-weight: 700;
+            margin: 30px 0 15px;
+            color: #00e676; /* Green accent */
             text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
         }
         .container {
-            max-width: 1000px;
-            margin: 0 auto 40px auto;
+            max-width: 800px;
+            margin: 40px auto 40px auto;
             padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
         p {
             font-size: 18px;
             line-height: 1.6;
-            max-width: 700px;
-            margin: 20px auto;
+            margin: 15px 0;
             color: rgba(255, 255, 255, 0.9);
+        }
+        .divider {
+            width: 100px;
+            height: 2px;
+            background: #00e676;
+            margin: 30px auto;
+            border-radius: 1px;
         }
         .cta-button {
             display: inline-block;
-            padding: 15px 30px;
-            font-size: 18px;
+            padding: 12px 25px;
+            font-size: 16px;
             font-weight: 700;
             color: #fff;
             background: #00e676;
@@ -72,33 +81,22 @@
             background: #00c853;
             transform: translateY(-3px);
         }
-        .preview {
-            margin: 40px 0;
+        .profile img {
+            width: auto;
+            height: auto;
+            max-width: 300px;
+            max-height: 300px;
+            border-radius: 0%;
+            margin: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
         }
-        .preview p {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 15px;
-        }
-        .preview img {
-            max-width: 100%;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-        .social-links {
-            margin-top: 30px;
-        }
-        .social-links a {
-            color: #ffffff;
-            font-size: 28px;
-            margin: 0 20px;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-        .social-links a:hover {
+        .icon {
+            font-size: 40px;
+            margin-bottom: 20px;
             color: #00e676;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
         }
-        /* Navbar styles (copied from index.html) */
+        /* Navbar styles */
         .navbar {
             position: fixed;
             top: 0;
@@ -114,7 +112,7 @@
         }
         .brand {
             color: #fff;
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -143,6 +141,19 @@
         }
         .side-menu.open {
             width: 240px;
+        }
+        .social-links {
+            margin-top: 30px;
+        }
+        .social-links a {
+            color: #ffffff;
+            font-size: 28px;
+            margin: 0 20px;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .social-links a:hover {
+            color: #00e676;
         }
         .close-btn {
             position: absolute;
@@ -216,12 +227,12 @@
         }
         /* Responsive adjustments */
         @media (max-width: 600px) {
-            h1 { font-size: 40px; }
-            h2 { font-size: 18px; }
+            h1 { font-size: 36px; }
+            h2 { font-size: 20px; }
             p { font-size: 16px; }
-            .cta-button { padding: 12px 20px; font-size: 16px; }
-            .preview p { font-size: 18px; }
-            .social-links a { font-size: 24px; margin: 0 15px; }
+            .cta-button { padding: 10px 20px; font-size: 14px; }
+            .profile img { width: 80px; height: 80px; }
+            .icon { font-size: 30px; }
             footer, footer p { font-size: 10px; }
             footer img { height: 14px !important; }
         }
@@ -229,7 +240,7 @@
 </head>
 <body>
     <nav class="navbar">
-        <div class="brand"><i class="fas fa-atom"></i>Periodic Table</div>
+        <div class="brand"><i class="fas fa-atom"></i> Periodic Table</div>
         <button class="hamburger" aria-label="Open menu" onclick="toggleMenu()">
             <i class="fas fa-bars"></i>
         </button>
@@ -242,29 +253,60 @@
         <ul class="menu-list">
             <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
             <li><a href="home.html"><i class="fas fa-table"></i> Periodic Table</a></li>
-            <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
-            <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
+            <li><a href="about.html"><i class="fas fa-envelope"></i> About</a></li>
+            <li><a href="contact.html"><i class="fas fa-info-circle"></i> Contact</a></li>
         </ul>
     </div>
 
     <div class="container">
-        <h1>Modern <i class="fas fa-atom"></i>  Periodic Table</h1>
-        <h2>Discover the Elements Like Never Before</h2>
-        <p>Welcome to the Modern Interactive <i class="fas fa-atom"></i>  Periodic Table, created by Rifatuzzaman & Urfa Hasan Fattah. Explore all 118 elements with interactive filtering, search by name or symbol, and dive into the fascinating world of chemistry.</p>
-        <a href="home.html" class="cta-button">Explore the <i class="fas fa-atom"></i> Periodic Table</a>
-        <a href="contact.html" class="cta-button">Get in Touch</a>
-        <div class="preview">
-            <p>Preview the Interactive Table:</p>
-            <img src="periodic-table-preview.jpg" alt="Periodic Table Preview">
+        <i class="fas fa-atom icon"></i>
+        <h1>About Us</h1>
+        
+        <h2>The Project</h2>
+        <p>The Modern Interactive <i class="fas fa-atom"></i> Periodic Table is a web-based tool designed to make learning about the elements fun and engaging. Created in 2025, it features all 118 known elements with interactive filtering, search functionality, and detailed information—perfect for students, educators, and chemistry enthusiasts.</p>
+        
+        <div class="divider"></div>
+        
+        <h2>The Creators</h2>
+        <div class="profile">
+            <img src="rifatuzzaman.jpg" alt="Rifatuzzaman">
+            <p><strong>Rifatuzzaman:</strong> A web developer from Jamalpur, I built this project to combine my love for coding and science. I’m passionate about creating tools that make complex topics accessible, and I enjoy working with HTML, CSS, and JavaScript.</p>
+            <div class="social-links">
+  <a href="https://github.com/rifatuzzaman-rifat" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+  <a href="https://twitter.com" target="_blank" title="Twitter/X"><i class="fab fa-twitter"></i></a>
+  <a href="https://facebook.com" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a>
+  <a href="https://instagram.com" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+  <a href="https://linkedin.com" target="_blank" title="Linkedin"><i class="fab fa-linkedin"></i></a>
+  <!-- Add more social links as needed -->
+</div>
         </div>
-        <div class="social-links">
-            <a href="https://github.com/rifatuzzaman-rifat" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
-            <a href="https://twitter.com" target="_blank" title="Twitter/X"><i class="fab fa-twitter"></i></a>
-            <a href="https://facebook.com" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a>
-            <a href="https://instagram.com" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
-            <a href="https://linkedin.com" target="_blank" title="Linkedin"><i class="fab fa-linkedin"></i></a>
-            <!-- Add more social links as needed -->
+        <div class="divider"></div>
+        
+        <div class="profile">
+            <img src="urfa.jpg" alt="Urfa Hasan Fattah">
+            <p><strong>Urfa Hasan Fattah:</strong> A designer and science enthusiast from Netrakona, I helped shape the look and feel of this <i class="fas fa-atom"></i>periodic table. I’m driven by a curiosity about how technology can enhance education and inspire others.</p
+            <div class="social-links">
+  <a href="https://github.com/rifatuzzaman-rifat" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+  <a href="https://twitter.com" target="_blank" title="Twitter/X"><i class="fab fa-twitter"></i></a>
+  <a href="https://facebook.com" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a>
+  <a href="https://instagram.com" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+  <a href="https://linkedin.com" target="_blank" title="Linkedin"><i class="fab fa-linkedin"></i></a>
+  <!-- Add more social links as needed -->
+</div>
         </div>
+        
+        <div class="divider"></div>
+        
+        <h2>Why We Built It</h2>
+        <p>We wanted to create a free, accessible resource that brings the <i class="fas fa-atom"></i> periodic table to life. Whether you’re studying for a test, teaching a class, or just exploring the elements, we hope this tool sparks your interest in chemistry!</p>
+        
+        <div class="divider"></div>
+        
+        <h2>How It’s Built</h2>
+        <p>Developed with HTML, CSS, and JavaScript, hosted on Netlify, and styled with a modern gradient design. We used Font Awesome for icons and fetched element data from a custom JSON file to keep it lightweight and interactive.</p>
+        
+        <a href="home.html" class="cta-button">Explore the Table</a>
+        <a href="contact.html" class="cta-button">Contact Us</a>
     </div>
 
     <footer>
