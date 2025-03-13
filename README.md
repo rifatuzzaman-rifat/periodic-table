@@ -1,6 +1,6 @@
 # Periodic-table 
 
 # Live at: 
-# https://periodictable.netlify.app 
+# https://modern-periodic-table.netlify.app 
 and 
 # https://rifatuzzaman-rifat.github.io/periodic-table/
