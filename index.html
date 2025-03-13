@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Periodic Table</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Montserrat:wght@800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            background: linear-gradient(0deg, #1e3c72, #2a5298);
+            font-family: 'Roboto', sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 40px 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            color: #ffffff;
+            font-size: 100px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin: 30px 0;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            top: 4vh;
+            position: relative;
+        }
+        .container {
+            max-width: 2020px;
+            margin: 0 auto 40px auto;
+            padding: 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        table {
+            border-collapse: separate;
+            border-spacing: 7px;
+            width: auto;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        th {
+            font-size: 25px;
+            color: #fff;
+            padding: 5px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+        td {
+            width: 90px;
+            height: 90px;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 14px;
+            position: relative;
+            padding: 10px;
+            transition: all 0.3s ease, opacity 0.3s ease;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+        }
+        td:not(.empty):hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+        }
+        .empty {
+            background: transparent;
+            border: 1px transparent;
+            box-shadow: none;
+            position: relative;
+            font-size: 25px;
+            font-weight: bold;
+            color: white;
+            cursor: default;
+        }
+        .empty::after {
+            content: attr(data-label);
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .atomic-number {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #00e676;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+            transition: opacity 0.3s ease;
+        }
+        .atomic-mass {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #ff4081;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+            transition: opacity 0.3s ease;
+        }
+        .symbol {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 26px;
+            font-weight: 800;
+            display: block;
+            margin-top: 20px;
+            color: #ffffff;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            transition: opacity 0.3s ease;
+        }
+        .name {
+            display: block;
+            margin-top: 4px;
+            font-size: 12px;
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.8);
+            transition: opacity 0.3s ease;
+        }
+        .alkali-metal { background: rgba(255, 100, 100, 0.8); }
+        .alkaline-earth { background: rgba(255, 180, 100, 0.8); }
+        .transition-metal { background: rgba(100, 200, 255, 0.8); }
+        .post-transition { background: rgba(150, 255, 150, 0.8); }
+        .metalloid { background: rgba(200, 150, 255, 0.8); }
+        .nonmetal { background: rgba(255, 255, 100, 0.8); }
+        .noble-gas { background: rgba(100, 255, 255, 0.8); }
+        .lanthanide { background: rgba(255, 150, 200, 0.8); }
+        .actinide { background: rgba(200, 100, 255, 0.8); }
+        td.filtered { box-shadow: 0 0 10px rgba(255, 255, 255, 0.8); }
+        footer {
+            margin-top: 30px;
+            padding: 10px;
+            font-size: 11px;
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+        @media (max-width: 1700px) {
+            .container { max-width: 100%; padding: 0 10px; }
+            td { width: 80px; height: 80px; font-size: 13px; }
+            .symbol { font-size: 24px; }
+            .name { font-size: 11px; }
+        }
+        @media (max-width: 900px) {
+            td { width: 60px; height: 60px; font-size: 12px; }
+            .symbol { font-size: 20px; }
+            .name { font-size: 10px; }
+            h1 { font-size: 28px; }
+        }
+        @media (max-width: 600px) {
+            td { width: 50px; height: 50px; font-size: 10px; }
+            .symbol { font-size: 18px; }
+            .name { font-size: 9px; }
+            h1 { font-size: 24px; }
+            .atomic-number, .atomic-mass { font-size: 10px; }
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            transition: transform 0.3s ease;
+            min-height: 30px;
+        }
+        .navbar.hidden {
+            transform: translateY(-100%);
+        }
+        .brand {
+            color: #fff;
+            font-size: 024px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            flex-shrink: 0;
+        }
+        .search-container {
+            flex-grow: 1;
+            max-width: 400px;
+            margin: 0 20px;
+            display: flex;
+            align-items: center;
+        }
+        #search {
+            position: relative;
+            width: 100%;
+            height: 40px;
+            background: #fff;
+            border-radius: 20px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+        #search input {
+            width: 100%;
+            height: 100%;
+            padding: 0 20px 0 40px;
+            border: none;
+            font-size: 16px;
+            outline: none;
+        }
+        #search i {
+            position: absolute;
+            top: 50%;
+            left: 10px;
+            transform: translateY(-50%);
+            color: #2155d4;
+            font-size: 20px;
+        }
+        .hamburger {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 28px;
+            cursor: pointer;
+            padding: 5px 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+            z-index: 1002;
+            position: relative;
+            right:40px;
+        }
+        .hamburger:hover {
+            transform: scale(1.1);
+        }
+        .hamburger i {
+            display: block;
+        }
+
+        /* Side Menu Styles */
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1001;
+            transition: width 0.3s ease;
+            overflow-x: hidden;
+        }
+        .side-menu.open {
+            width: 330px;
+        }
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 36px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .close-btn:hover {
+            transform: rotate(90deg);
+        }
+        .menu-list {
+            list-style: none;
+            padding: 60px 20px 20px;
+            margin: 0;
+        }
+        .menu-list li {
+            margin: 10px 0;
+        }
+        .menu-list a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+        .menu-list a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(5px);
+        }
+        .menu-list i {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
+        /* Dropdown Styles */
+        .dropdown {
+            position: relative;
+        }
+        .dropdown-toggle {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 18px;
+            padding: 10px 15px;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: background 0.3s ease;
+        }
+        .dropdown-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .dropdown-toggle i.fa-chevron-down {
+            margin-left: auto;
+            font-size: 14px;
+            transition: transform 0.3s ease;
+        }
+        .dropdown-toggle.active i.fa-chevron-down {
+            transform: rotate(180deg);
+        }
+        .dropdown-content {
+    display: none;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+    max-height: 400px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.1);
+}
+.dropdown-content::-webkit-scrollbar {
+    width: 10px;
+}
+.dropdown-content::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+}
+.dropdown-content::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    transition: background 0.3s ease;
+}
+.dropdown-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+.dropdown-content.open {
+    display: block;
+}
+        .dropdown-content.open {
+            display: block;
+        }
+        .dropdown-content li a {
+            font-size: 16px;
+            padding: 8px 20px;
+        }
+
+ #filter-indicator {
+    color: #ffffff;
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    padding: 8px 16px;
+    letter-spacing: 3px;
+    background: transparent;
+    border-radius: 100px;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    display: inline-block;
+}
+
+@media (max-width: 600px) {
+    #filter-indicator {
+        font-size: 16px;
+        padding: 6px 12px;
+    }
+}
+
+
+
+/* Footer adjustments for CC license */
+footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px; /* Space between existing text and CC license */
+}
+
+footer p {
+    margin: 0;
+    font-size: 10px; /* Match existing footer font size */
+    color: #ffffff; /* Match text color */
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); /* Match text shadow */
+    text-align: center;
+}
+
+footer a {
+    color: #ffffff; /* Match link color to text */
+    text-decoration: none; /* Remove underline for a cleaner look */
+    transition: color 0.3s ease; /* Add hover effect */
+}
+
+footer a:hover {
+    color: #00e676; /* Match atomic-number green for hover */
+}
+
+footer a[rel="license"] {
+    display: inline-flex; /* Override inline-block for better alignment */
+    align-items: center;
+    gap: 5px; /* Space between text and icons */
+}
+
+footer img {
+    height: 16px !important; /* Slightly smaller than inline 22px to fit better */
+    margin-left: 5px; /* Consistent spacing */
+    vertical-align: middle; /* Better alignment with text */
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2)); /* Match text shadow */
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    footer {
+        padding: 8px;
+    }
+    footer p, footer {
+        font-size: 10px; /* Slightly smaller on mobile */
+    }
+    footer img {
+        height: 14px !important; /* Even smaller on mobile */
+    }
+}
+
+
+
+
+        /* Media Queries */
+        
+        
+        @media (max-width: 600px) {
+    .dropdown-content {
+        max-height: 300px;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.1);
+    }
+    .dropdown-content::-webkit-scrollbar {
+        width: 8px; /* Thinner on mobile */
+    }
+    .dropdown-content::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+    }
+    .dropdown-content::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 4px;
+    }
+    .dropdown-content::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.5);
+    }
+}
+        @media (max-width: 900px) {
+            .brand { font-size: 20px; }
+            .search-container { max-width: 300px; }
+            .hamburger { font-size: 24px; }
+        }
+        @media (max-width: 600px) {
+    .navbar { padding: 10px 15px; }
+    .brand { font-size: 18px; }
+    .search-container { max-width: 200px; }
+    #search input { font-size: 14px; padding: 0 15px 0 35px; }
+    #search i { font-size: 18px; left: 8px; }
+    .hamburger { font-size: 22px; }
+    .side-menu.open { width: 280px; } /* Slightly smaller for mobile, but still wider than original 240px */
+    .menu-list a { font-size: 16px; }
+    .dropdown-content li a { font-size: 14px; }
+    .dropdown-content { max-height: 300px; } /* Smaller height on mobile for better fit */
+}
+    </style>
+</head>
+<body class="with-navbar">
+    <nav class="navbar">
+        <div class="brand">Periodic Table</div>
+        <div class="search-container">
+            <div id="search">
+                <i class="fas fa-search"></i>
+                <input type="search" name="q" aria-label="Search for elements" placeholder="Search elements..."/>
+            </div>
+        </div>
+        <button class="hamburger" aria-label="Open menu" onclick="toggleMenu()">
+            <i class="fas fa-bars"></i>
+        </button>
+    </nav>
+
+    <div class="side-menu" id="sideMenu">
+        <button class="close-btn" aria-label="Close menu" onclick="toggleMenu()">
+            <i class="fas fa-times"></i>
+        </button>
+        <ul class="menu-list">
+            <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="#"><i class="fas fa-table"></i> Periodic Table</a></li>
+            <li class="dropdown">
+                <button class="dropdown-toggle" aria-expanded="false" onclick="toggleDropdown(this)">
+                    <i class="fas fa-list"></i> Elements List <i class="fas fa-chevron-down"></i>
+                </button>
+                <ul class="dropdown-content">
+                    <li><a href="#" onclick="filterElements('all')"><i class="fas fa-eye"></i> Show All (118)</a></li>
+                    <li><a href="#" onclick="filterElements('gas')"><i class="fas fa-cloud"></i> Gas (11)</a></li>
+                    <li><a href="#" onclick="filterElements('noble-gas')"><i class="fas fa-shield-alt"></i> Inert (Noble Gases) (6)</a></li>
+                    <li><a href="#" onclick="filterElements('chalcogen')"><i class="fas fa-atom"></i> Chalcogens (6)</a></li>
+                    <li><a href="#" onclick="filterElements('pnictogen')"><i class="fas fa-atom"></i> Pnictogens (6)</a></li>
+                    <li><a href="#" onclick="filterElements('solid')"><i class="fas fa-cube"></i> Solid (103)</a></li>
+                    <li><a href="#" onclick="filterElements('liquid')"><i class="fas fa-tint"></i> Liquid (2)</a></li>
+                    <li><a href="#" onclick="filterElements('radioactive')"><i class="fas fa-radiation"></i> Radioactive (38)</a></li>
+                    <li><a href="#" onclick="filterElements('metal')"><i class="fas fa-hammer"></i> Metals (91)</a></li>
+                    <li><a href="#" onclick="filterElements('nonmetal')"><i class="fas fa-leaf"></i> Non-Metals (17)</a></li>
+                    <li><a href="#" onclick="filterElements('semiconductor')"><i class="fas fa-microchip"></i> Semiconductors (7)</a></li>
+                    <li><a href="#" onclick="filterElements('s-block')"><i class="fas fa-square"></i> s-block (12)</a></li>
+                    <li><a href="#" onclick="filterElements('p-block')"><i class="fas fa-square"></i> p-block (35)</a></li>
+                    <li><a href="#" onclick="filterElements('d-block')"><i class="fas fa-square"></i> d-block (40)</a></li>
+                    <li><a href="#" onclick="filterElements('f-block')"><i class="fas fa-square"></i> f-block (31)</a></li>
+                    <li><a href="#" onclick="filterElements('alkali-metal')"><i class="fas fa-burn"></i> Alkali Metals (6)</a></li>
+                    <li><a href="#" onclick="filterElements('alkaline-earth')"><i class="fas fa-mountain"></i> Alkaline Earth Metals (6)</a></li>
+                    <li><a href="#" onclick="filterElements('synthetic')"><i class="fas fa-flask"></i> Synthetic (26)</a></li>
+                    <li><a href="#" onclick="filterElements('reactive')"><i class="fas fa-exclamation-triangle"></i> Highly Reactive (11)</a></li>
+                    <li><a href="#" onclick="filterElements('essential')"><i class="fas fa-dna"></i> Essential (Biological) (10)</a></li>
+                    <li><a href="#" onclick="filterElements('magnetic')"><i class="fas fa-magnet"></i> Magnetic (4)</a></li>
+                    <li><a href="#" onclick="filterElements('rare-earth')"><i class="fas fa-gem"></i> Rare Earth (17)</a></li>
+                    <li><a href="#" onclick="filterElements('halogen')"><i class="fas fa-burn"></i> Halogens (6)</a></li>
+                    <li><a href="#" onclick="filterElements('multi-oxidation')"><i class="fas fa-exchange-alt"></i> Multiple Oxidation States (7)</a></li>
+                </ul>
+            </li>
+            <li><a href="#"><i class="fas fa-info-circle"></i> About</a></li>
+            <li><a href="#"><i class="fas fa-envelope"></i> Contact</a></li>
+        </ul>
+    </div>
+
+    <div class="container" id="main-table">
+        <h1>Periodic Table</h1>
+        <div id="filter-indicator">Showing: All Elements(118)</div>
+        <table>
+            <tr>
+                <td class="empty"></td>
+                <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th><th>18</th>
+            </tr>
+            <tr>
+                <td class="empty">1</td>
+                <td class="alkali-metal" aria-label="Hydrogen, Atomic Number 1, Atomic Mass 1" onclick="showAtomDetails(1)"><span class="atomic-number">1</span><span class="atomic-mass">1</span><span class="symbol">H</span><span class="name">Hydrogen</span></td>
+                <td class="empty" colspan="16"></td>
+                <td class="noble-gas" aria-label="Helium, Atomic Number 2, Atomic Mass 4" onclick="showAtomDetails(2)"><span class="atomic-number">2</span><span class="atomic-mass">4</span><span class="symbol">He</span><span class="name">Helium</span></td>
+            </tr>
+            <tr><td class="empty">2</td>
+                <td class="alkali-metal" aria-label="Lithium, Atomic Number 3, Atomic Mass 7" onclick="showAtomDetails(3)"><span class="atomic-number">3</span><span class="atomic-mass">7</span><span class="symbol">Li</span><span class="name">Lithium</span></td>
+                <td class="alkaline-earth" aria-label="Beryllium, Atomic Number 4, Atomic Mass 9" onclick="showAtomDetails(4)"><span class="atomic-number">4</span><span class="atomic-mass">9</span><span class="symbol">Be</span><span class="name">Beryllium</span></td>
+                <td class="empty" colspan="10"></td>
+                <td class="metalloid" aria-label="Boron, Atomic Number 5, Atomic Mass 11" onclick="showAtomDetails(5)"><span class="atomic-number">5</span><span class="atomic-mass">11</span><span class="symbol">B</span><span class="name">Boron</span></td>
+                <td class="nonmetal" aria-label="Carbon, Atomic Number 6, Atomic Mass 12" onclick="showAtomDetails(6)"><span class="atomic-number">6</span><span class="atomic-mass">12</span><span class="symbol">C</span><span class="name">Carbon</span></td>
+                <td class="nonmetal" aria-label="Nitrogen, Atomic Number 7, Atomic Mass 14" onclick="showAtomDetails(7)"><span class="atomic-number">7</span><span class="atomic-mass">14</span><span class="symbol">N</span><span class="name">Nitrogen</span></td>
+                <td class="nonmetal" aria-label="Oxygen, Atomic Number 8, Atomic Mass 16" onclick="showAtomDetails(8)"><span class="atomic-number">8</span><span class="atomic-mass">16</span><span class="symbol">O</span><span class="name">Oxygen</span></td>
+                <td class="nonmetal" aria-label="Fluorine, Atomic Number 9, Atomic Mass 19" onclick="showAtomDetails(9)"><span class="atomic-number">9</span><span class="atomic-mass">19</span><span class="symbol">F</span><span class="name">Fluorine</span></td>
+                <td class="noble-gas" aria-label="Neon, Atomic Number 10, Atomic Mass 20" onclick="showAtomDetails(10)"><span class="atomic-number">10</span><span class="atomic-mass">20</span><span class="symbol">Ne</span><span class="name">Neon</span></td>
+            </tr>
+            <tr><td class="empty">3</td>
+                <td class="alkali-metal" aria-label="Sodium, Atomic Number 11, Atomic Mass 23" onclick="showAtomDetails(11)"><span class="atomic-number">11</span><span class="atomic-mass">23</span><span class="symbol">Na</span><span class="name">Sodium</span></td>
+                <td class="alkaline-earth" aria-label="Magnesium, Atomic Number 12, Atomic Mass 24" onclick="showAtomDetails(12)"><span class="atomic-number">12</span><span class="atomic-mass">24</span><span class="symbol">Mg</span><span class="name">Magnesium</span></td>
+                <td class="empty" colspan="10"></td>
+                <td class="post-transition" aria-label="Aluminum, Atomic Number 13, Atomic Mass 27" onclick="showAtomDetails(13)"><span class="atomic-number">13</span><span class="atomic-mass">27</span><span class="symbol">Al</span><span class="name">Aluminum</span></td>
+                <td class="metalloid" aria-label="Silicon, Atomic Number 14, Atomic Mass 28" onclick="showAtomDetails(14)"><span class="atomic-number">14</span><span class="atomic-mass">28</span><span class="symbol">Si</span><span class="name">Silicon</span></td>
+                <td class="nonmetal" aria-label="Phosphorus, Atomic Number 15, Atomic Mass 31" onclick="showAtomDetails(15)"><span class="atomic-number">15</span><span class="atomic-mass">31</span><span class="symbol">P</span><span class="name">Phosphorus</span></td>
+                <td class="nonmetal" aria-label="Sulfur, Atomic Number 16, Atomic Mass 32" onclick="showAtomDetails(16)"><span class="atomic-number">16</span><span class="atomic-mass">32</span><span class="symbol">S</span><span class="name">Sulfur</span></td>
+                <td class="nonmetal" aria-label="Chlorine, Atomic Number 17, Atomic Mass 36" onclick="showAtomDetails(17)"><span class="atomic-number">17</span><span class="atomic-mass">36</span><span class="symbol">Cl</span><span class="name">Chlorine</span></td>
+                <td class="noble-gas" aria-label="Argon, Atomic Number 18, Atomic Mass 40" onclick="showAtomDetails(18)"><span class="atomic-number">18</span><span class="atomic-mass">40</span><span class="symbol">Ar</span><span class="name">Argon</span></td>
+            </tr>
+            <tr><td class="empty">4</td>
+                <td class="alkali-metal" aria-label="Potassium, Atomic Number 19, Atomic Mass 39" onclick="showAtomDetails(19)"><span class="atomic-number">19</span><span class="atomic-mass">39</span><span class="symbol">K</span><span class="name">Potassium</span></td>
+                <td class="alkaline-earth" aria-label="Calcium, Atomic Number 20, Atomic Mass 40" onclick="showAtomDetails(20)"><span class="atomic-number">20</span><span class="atomic-mass">40</span><span class="symbol">Ca</span><span class="name">Calcium</span></td>
+                <td class="transition-metal" aria-label="Scandium, Atomic Number 21, Atomic Mass 45" onclick="showAtomDetails(21)"><span class="atomic-number">21</span><span class="atomic-mass">45</span><span class="symbol">Sc</span><span class="name">Scandium</span></td>
+                <td class="transition-metal" aria-label="Titanium, Atomic Number 22, Atomic Mass 48" onclick="showAtomDetails(22)"><span class="atomic-number">22</span><span class="atomic-mass">48</span><span class="symbol">Ti</span><span class="name">Titanium</span></td>
+                <td class="transition-metal" aria-label="Vanadium, Atomic Number 23, Atomic Mass 51" onclick="showAtomDetails(23)"><span class="atomic-number">23</span><span class="atomic-mass">51</span><span class="symbol">V</span><span class="name">Vanadium</span></td>
+                <td class="transition-metal" aria-label="Chromium, Atomic Number 24, Atomic Mass 52" onclick="showAtomDetails(24)"><span class="atomic-number">24</span><span class="atomic-mass">52</span><span class="symbol">Cr</span><span class="name">Chromium</span></td>
+                <td class="transition-metal" aria-label="Manganese, Atomic Number 25, Atomic Mass 55" onclick="showAtomDetails(25)"><span class="atomic-number">25</span><span class="atomic-mass">55</span><span class="symbol">Mn</span><span class="name">Manganese</span></td>
+                <td class="transition-metal" aria-label="Iron, Atomic Number 26, Atomic Mass 56" onclick="showAtomDetails(26)"><span class="atomic-number">26</span><span class="atomic-mass">56</span><span class="symbol">Fe</span><span class="name">Iron</span></td>
+                <td class="transition-metal" aria-label="Cobalt, Atomic Number 27, Atomic Mass 59" onclick="showAtomDetails(27)"><span class="atomic-number">27</span><span class="atomic-mass">59</span><span class="symbol">Co</span><span class="name">Cobalt</span></td>
+                <td class="transition-metal" aria-label="Nickel, Atomic Number 28, Atomic Mass 59" onclick="showAtomDetails(28)"><span class="atomic-number">28</span><span class="atomic-mass">59</span><span class="symbol">Ni</span><span class="name">Nickel</span></td>
+                <td class="transition-metal" aria-label="Copper, Atomic Number 29, Atomic Mass 64" onclick="showAtomDetails(29)"><span class="atomic-number">29</span><span class="atomic-mass">64</span><span class="symbol">Cu</span><span class="name">Copper</span></td>
+                <td class="transition-metal" aria-label="Zinc, Atomic Number 30, Atomic Mass 65" onclick="showAtomDetails(30)"><span class="atomic-number">30</span><span class="atomic-mass">65</span><span class="symbol">Zn</span><span class="name">Zinc</span></td>
+                <td class="post-transition" aria-label="Gallium, Atomic Number 31, Atomic Mass 70" onclick="showAtomDetails(31)"><span class="atomic-number">31</span><span class="atomic-mass">70</span><span class="symbol">Ga</span><span class="name">Gallium</span></td>
+                <td class="metalloid" aria-label="Germanium, Atomic Number 32, Atomic Mass 73" onclick="showAtomDetails(32)"><span class="atomic-number">32</span><span class="atomic-mass">73</span><span class="symbol">Ge</span><span class="name">Germanium</span></td>
+                <td class="metalloid" aria-label="Arsenic, Atomic Number 33, Atomic Mass 75" onclick="showAtomDetails(33)"><span class="atomic-number">33</span><span class="atomic-mass">75</span><span class="symbol">As</span><span class="name">Arsenic</span></td>
+                <td class="nonmetal" aria-label="Selenium, Atomic Number 34, Atomic Mass 79" onclick="showAtomDetails(34)"><span class="atomic-number">34</span><span class="atomic-mass">79</span><span class="symbol">Se</span><span class="name">Selenium</span></td>
+                <td class="nonmetal" aria-label="Bromine, Atomic Number 35, Atomic Mass 80" onclick="showAtomDetails(35)"><span class="atomic-number">35</span><span class="atomic-mass">80</span><span class="symbol">Br</span><span class="name">Bromine</span></td>
+                <td class="noble-gas" aria-label="Krypton, Atomic Number 36, Atomic Mass 84" onclick="showAtomDetails(36)"><span class="atomic-number">36</span><span class="atomic-mass">84</span><span class="symbol">Kr</span><span class="name">Krypton</span></td>
+            </tr>
+            <tr><td class="empty">5</td>
+                <td class="alkali-metal" aria-label="Rubidium, Atomic Number 37, Atomic Mass 85" onclick="showAtomDetails(37)"><span class="atomic-number">37</span><span class="atomic-mass">85</span><span class="symbol">Rb</span><span class="name">Rubidium</span></td>
+                <td class="alkaline-earth" aria-label="Strontium, Atomic Number 38, Atomic Mass 88" onclick="showAtomDetails(38)"><span class="atomic-number">38</span><span class="atomic-mass">88</span><span class="symbol">Sr</span><span class="name">Strontium</span></td>
+                <td class="transition-metal" aria-label="Yttrium, Atomic Number 39, Atomic Mass 89" onclick="showAtomDetails(39)"><span class="atomic-number">39</span><span class="atomic-mass">89</span><span class="symbol">Y</span><span class="name">Yttrium</span></td>
+                <td class="transition-metal" aria-label="Zirconium, Atomic Number 40, Atomic Mass 91" onclick="showAtomDetails(40)"><span class="atomic-number">40</span><span class="atomic-mass">91</span><span class="symbol">Zr</span><span class="name">Zirconium</span></td>
+                <td class="transition-metal" aria-label="Niobium, Atomic Number 41, Atomic Mass 93" onclick="showAtomDetails(41)"><span class="atomic-number">41</span><span class="atomic-mass">93</span><span class="symbol">Nb</span><span class="name">Niobium</span></td>
+                <td class="transition-metal" aria-label="Molybdenum, Atomic Number 42, Atomic Mass 96" onclick="showAtomDetails(42)"><span class="atomic-number">42</span><span class="atomic-mass">96</span><span class="symbol">Mo</span><span class="name">Molybdenum</span></td>
+                <td class="transition-metal" aria-label="Technetium, Atomic Number 43, Atomic Mass 98" onclick="showAtomDetails(43)"><span class="atomic-number">43</span><span class="atomic-mass">98</span><span class="symbol">Tc</span><span class="name">Technetium</span></td>
+                <td class="transition-metal" aria-label="Ruthenium, Atomic Number 44, Atomic Mass 101" onclick="showAtomDetails(44)"><span class="atomic-number">44</span><span class="atomic-mass">101</span><span class="symbol">Ru</span><span class="name">Ruthenium</span></td>
+                <td class="transition-metal" aria-label="Rhodium, Atomic Number 45, Atomic Mass 103" onclick="showAtomDetails(45)"><span class="atomic-number">45</span><span class="atomic-mass">103</span><span class="symbol">Rh</span><span class="name">Rhodium</span></td>
+                <td class="transition-metal" aria-label="Palladium, Atomic Number 46, Atomic Mass 106" onclick="showAtomDetails(46)"><span class="atomic-number">46</span><span class="atomic-mass">106</span><span class="symbol">Pd</span><span class="name">Palladium</span></td>
+                <td class="transition-metal" aria-label="Silver, Atomic Number 47, Atomic Mass 108" onclick="showAtomDetails(47)"><span class="atomic-number">47</span><span class="atomic-mass">108</span><span class="symbol">Ag</span><span class="name">Silver</span></td>
+                <td class="transition-metal" aria-label="Cadmium, Atomic Number 48, Atomic Mass 112" onclick="showAtomDetails(48)"><span class="atomic-number">48</span><span class="atomic-mass">112</span><span class="symbol">Cd</span><span class="name">Cadmium</span></td>
+                <td class="post-transition" aria-label="Indium, Atomic Number 49, Atomic Mass 115" onclick="showAtomDetails(49)"><span class="atomic-number">49</span><span class="atomic-mass">115</span><span class="symbol">In</span><span class="name">Indium</span></td>
+                <td class="post-transition" aria-label="Tin, Atomic Number 50, Atomic Mass 119" onclick="showAtomDetails(50)"><span class="atomic-number">50</span><span class="atomic-mass">119</span><span class="symbol">Sn</span><span class="name">Tin</span></td>
+                <td class="metalloid" aria-label="Antimony, Atomic Number 51, Atomic Mass 122" onclick="showAtomDetails(51)"><span class="atomic-number">51</span><span class="atomic-mass">122</span><span class="symbol">Sb</span><span class="name">Antimony</span></td>
+                <td class="nonmetal" aria-label="Tellurium, Atomic Number 52, Atomic Mass 128" onclick="showAtomDetails(52)"><span class="atomic-number">52</span><span class="atomic-mass">128</span><span class="symbol">Te</span><span class="name">Tellurium</span></td>
+                <td class="nonmetal" aria-label="Iodine, Atomic Number 53, Atomic Mass 127" onclick="showAtomDetails(53)"><span class="atomic-number">53</span><span class="atomic-mass">127</span><span class="symbol">I</span><span class="name">Iodine</span></td>
+                <td class="noble-gas" aria-label="Xenon, Atomic Number 54, Atomic Mass 131" onclick="showAtomDetails(54)"><span class="atomic-number">54</span><span class="atomic-mass">131</span><span class="symbol">Xe</span><span class="name">Xenon</span></td>
+            </tr>
+            <tr><td class="empty">6</td>
+                <td class="alkali-metal" aria-label="Cesium, Atomic Number 55, Atomic Mass 133" onclick="showAtomDetails(55)"><span class="atomic-number">55</span><span class="atomic-mass">133</span><span class="symbol">Cs</span><span class="name">Cesium</span></td>
+                <td class="alkaline-earth" aria-label="Barium, Atomic Number 56, Atomic Mass 137" onclick="showAtomDetails(56)"><span class="atomic-number">56</span><span class="atomic-mass">137</span><span class="symbol">Ba</span><span class="name">Barium</span></td>
+                <td class="empty" data-label="Lanthanides (58-71)"></td>
+                <td class="transition-metal" aria-label="Hafnium, Atomic Number 72, Atomic Mass 178" onclick="showAtomDetails(72)"><span class="atomic-number">72</span><span class="atomic-mass">178</span><span class="symbol">Hf</span><span class="name">Hafnium</span></td>
+                <td class="transition-metal" aria-label="Tantalum, Atomic Number 73, Atomic Mass 181" onclick="showAtomDetails(73)"><span class="atomic-number">73</span><span class="atomic-mass">181</span><span class="symbol">Ta</span><span class="name">Tantalum</span></td>
+                <td class="transition-metal" aria-label="Tungsten, Atomic Number 74, Atomic Mass 184" onclick="showAtomDetails(74)"><span class="atomic-number">74</span><span class="atomic-mass">184</span><span class="symbol">W</span><span class="name">Tungsten</span></td>
+                <td class="transition-metal" aria-label="Rhenium, Atomic Number 75, Atomic Mass 186" onclick="showAtomDetails(75)"><span class="atomic-number">75</span><span class="atomic-mass">186</span><span class="symbol">Re</span><span class="name">Rhenium</span></td>
+                <td class="transition-metal" aria-label="Osmium, Atomic Number 76, Atomic Mass 190" onclick="showAtomDetails(76)"><span class="atomic-number">76</span><span class="atomic-mass">190</span><span class="symbol">Os</span><span class="name">Osmium</span></td>
+                <td class="transition-metal" aria-label="Iridium, Atomic Number 77, Atomic Mass 192" onclick="showAtomDetails(77)"><span class="atomic-number">77</span><span class="atomic-mass">192</span><span class="symbol">Ir</span><span class="name">Iridium</span></td>
+                <td class="transition-metal" aria-label="Platinum, Atomic Number 78, Atomic Mass 195" onclick="showAtomDetails(78)"><span class="atomic-number">78</span><span class="atomic-mass">195</span><span class="symbol">Pt</span><span class="name">Platinum</span></td>
+                <td class="transition-metal" aria-label="Gold, Atomic Number 79, Atomic Mass 197" onclick="showAtomDetails(79)"><span class="atomic-number">79</span><span class="atomic-mass">197</span><span class="symbol">Au</span><span class="name">Gold</span></td>
+                <td class="transition-metal" aria-label="Mercury, Atomic Number 80, Atomic Mass 201" onclick="showAtomDetails(80)"><span class="atomic-number">80</span><span class="atomic-mass">201</span><span class="symbol">Hg</span><span class="name">Mercury</span></td>
+                <td class="post-transition" aria-label="Thallium, Atomic Number 81, Atomic Mass 204" onclick="showAtomDetails(81)"><span class="atomic-number">81</span><span class="atomic-mass">204</span><span class="symbol">Tl</span><span class="name">Thallium</span></td>
+                <td class="post-transition" aria-label="Lead, Atomic Number 82, Atomic Mass 207" onclick="showAtomDetails(82)"><span class="atomic-number">82</span><span class="atomic-mass">207</span><span class="symbol">Pb</span><span class="name">Lead</span></td>
+                <td class="post-transition" aria-label="Bismuth, Atomic Number 83, Atomic Mass 209" onclick="showAtomDetails(83)"><span class="atomic-number">83</span><span class="atomic-mass">209</span><span class="symbol">Bi</span><span class="name">Bismuth</span></td>
+                <td class="metalloid" aria-label="Polonium, Atomic Number 84, Atomic Mass 209" onclick="showAtomDetails(84)"><span class="atomic-number">84</span><span class="atomic-mass">209</span><span class="symbol">Po</span><span class="name">Polonium</span></td>
+                <td class="nonmetal" aria-label="Astatine, Atomic Number 85, Atomic Mass 210" onclick="showAtomDetails(85)"><span class="atomic-number">85</span><span class="atomic-mass">210</span><span class="symbol">At</span><span class="name">Astatine</span></td>
+                <td class="noble-gas" aria-label="Radon, Atomic Number 86, Atomic Mass 222" onclick="showAtomDetails(86)"><span class="atomic-number">86</span><span class="atomic-mass">222</span><span class="symbol">Rn</span><span class="name">Radon</span></td>
+            </tr>
+            <tr><td class="empty">7</td>
+                <td class="alkali-metal" aria-label="Francium, Atomic Number 87, Atomic Mass 223" onclick="showAtomDetails(87)"><span class="atomic-number">87</span><span class="atomic-mass">223</span><span class="symbol">Fr</span><span class="name">Francium</span></td>
+                <td class="alkaline-earth" aria-label="Radium, Atomic Number 88, Atomic Mass 226" onclick="showAtomDetails(88)"><span class="atomic-number">88</span><span class="atomic-mass">226</span><span class="symbol">Ra</span><span class="name">Radium</span></td>
+                <td class="empty" data-label="Actinides (90-103)"></td>
+                <td class="transition-metal" aria-label="Rutherfordium, Atomic Number 104, Atomic Mass 267" onclick="showAtomDetails(104)"><span class="atomic-number">104</span><span class="atomic-mass">[267]</span><span class="symbol">Rf</span><span class="name">Rutherfordium</span></td>
+                <td class="transition-metal" aria-label="Dubnium, Atomic Number 105, Atomic Mass 268" onclick="showAtomDetails(105)"><span class="atomic-number">105</span><span class="atomic-mass">[268]</span><span class="symbol">Db</span><span class="name">Dubnium</span></td>
+                <td class="transition-metal" aria-label="Seaborgium, Atomic Number 106, Atomic Mass 269" onclick="showAtomDetails(106)"><span class="atomic-number">106</span><span class="atomic-mass">[269]</span><span class="symbol">Sg</span><span class="name">Seaborgium</span></td>
+                <td class="transition-metal" aria-label="Bohrium, Atomic Number 107, Atomic Mass 270" onclick="showAtomDetails(107)"><span class="atomic-number">107</span><span class="atomic-mass">[270]</span><span class="symbol">Bh</span><span class="name">Bohrium</span></td>
+                <td class="transition-metal" aria-label="Hassium, Atomic Number 108, Atomic Mass 269" onclick="showAtomDetails(108)"><span class="atomic-number">108</span><span class="atomic-mass">[269]</span><span class="symbol">Hs</span><span class="name">Hassium</span></td>
+                <td class="transition-metal" aria-label="Meitnerium, Atomic Number 109, Atomic Mass 278" onclick="showAtomDetails(109)"><span class="atomic-number">109</span><span class="atomic-mass">[278]</span><span class="symbol">Mt</span><span class="name">Meitnerium</span></td>
+                <td class="transition-metal" aria-label="Darmstadtium, Atomic Number 110, Atomic Mass 281" onclick="showAtomDetails(110)"><span class="atomic-number">110</span><span class="atomic-mass">[281]</span><span class="symbol">Ds</span><span class="name">Darmstadtium</span></td>
+                <td class="transition-metal" aria-label="Roentgenium, Atomic Number 111, Atomic Mass 281" onclick="showAtomDetails(111)"><span class="atomic-number">111</span><span class="atomic-mass">[281]</span><span class="symbol">Rg</span><span class="name">Roentgenium</span></td>
+                <td class="transition-metal" aria-label="Copernicium, Atomic Number 112, Atomic Mass 285" onclick="showAtomDetails(112)"><span class="atomic-number">112</span><span class="atomic-mass">[285]</span><span class="symbol">Cn</span><span class="name">Copernicium</span></td>
+                <td class="post-transition" aria-label="Nihonium, Atomic Number 113, Atomic Mass 286" onclick="showAtomDetails(113)"><span class="atomic-number">113</span><span class="atomic-mass">[286]</span><span class="symbol">Nh</span><span class="name">Nihonium</span></td>
+                <td class="post-transition" aria-label="Flerovium, Atomic Number 114, Atomic Mass 289" onclick="showAtomDetails(114)"><span class="atomic-number">114</span><span class="atomic-mass">[289]</span><span class="symbol">Fl</span><span class="name">Flerovium</span></td>
+                <td class="post-transition" aria-label="Moscovium, Atomic Number 115, Atomic Mass 289" onclick="showAtomDetails(115)"><span class="atomic-number">115</span><span class="atomic-mass">[289]</span><span class="symbol">Mc</span><span class="name">Moscovium</span></td>
+                <td class="post-transition" aria-label="Livermorium, Atomic Number 116, Atomic Mass 293" onclick="showAtomDetails(116)"><span class="atomic-number">116</span><span class="atomic-mass">[293]</span><span class="symbol">Lv</span><span class="name">Livermorium</span></td>
+                <td class="nonmetal" aria-label="Tennessine, Atomic Number 117, Atomic Mass 294" onclick="showAtomDetails(117)"><span class="atomic-number">117</span><span class="atomic-mass">[294]</span><span class="symbol">Ts</span><span class="name">Tennessine</span></td>
+                <td class="noble-gas" aria-label="Oganesson, Atomic Number 118, Atomic Mass 294" onclick="showAtomDetails(118)"><span class="atomic-number">118</span><span class="atomic-mass">[294]</span><span class="symbol">Og</span><span class="name">Oganesson</span></td>
+            </tr>
+            <tr>
+                <td class="empty" colspan="3">Lanthanides</td>
+                <td class="lanthanide" aria-label="Cerium, Atomic Number 58, Atomic Mass 140" onclick="showAtomDetails(58)"><span class="atomic-number">58</span><span class="atomic-mass">140</span><span class="symbol">Ce</span><span class="name">Cerium</span></td>
+                <td class="lanthanide" aria-label="Praseodymium, Atomic Number 59, Atomic Mass 141" onclick="showAtomDetails(59)"><span class="atomic-number">59</span><span class="atomic-mass">141</span><span class="symbol">Pr</span><span class="name">Praseodymium</span></td>
+                <td class="lanthanide" aria-label="Neodymium, Atomic Number 60, Atomic Mass 144" onclick="showAtomDetails(60)"><span class="atomic-number">60</span><span class="atomic-mass">144</span><span class="symbol">Nd</span><span class="name">Neodymium</span></td>
+                <td class="lanthanide" aria-label="Promethium, Atomic Number 61, Atomic Mass 145" onclick="showAtomDetails(61)"><span class="atomic-number">61</span><span class="atomic-mass">145</span><span class="symbol">Pm</span><span class="name">Promethium</span></td>
+                <td class="lanthanide" aria-label="Samarium, Atomic Number 62, Atomic Mass 150" onclick="showAtomDetails(62)"><span class="atomic-number">62</span><span class="atomic-mass">150</span><span class="symbol">Sm</span><span class="name">Samarium</span></td>
+                <td class="lanthanide" aria-label="Europium, Atomic Number 63, Atomic Mass 152" onclick="showAtomDetails(63)"><span class="atomic-number">63</span><span class="atomic-mass">152</span><span class="symbol">Eu</span><span class="name">Europium</span></td>
+                <td class="lanthanide" aria-label="Gadolinium, Atomic Number 64, Atomic Mass 157" onclick="showAtomDetails(64)"><span class="atomic-number">64</span><span class="atomic-mass">157</span><span class="symbol">Gd</span><span class="name">Gadolinium</span></td>
+                <td class="lanthanide" aria-label="Terbium, Atomic Number 65, Atomic Mass 159" onclick="showAtomDetails(65)"><span class="atomic-number">65</span><span class="atomic-mass">159</span><span class="symbol">Tb</span><span class="name">Terbium</span></td>
+                <td class="lanthanide" aria-label="Dysprosium, Atomic Number 66, Atomic Mass 163" onclick="showAtomDetails(66)"><span class="atomic-number">66</span><span class="atomic-mass">163</span><span class="symbol">Dy</span><span class="name">Dysprosium</span></td>
+                <td class="lanthanide" aria-label="Holmium, Atomic Number 67, Atomic Mass 165" onclick="showAtomDetails(67)"><span class="atomic-number">67</span><span class="atomic-mass">165</span><span class="symbol">Ho</span><span class="name">Holmium</span></td>
+                <td class="lanthanide" aria-label="Erbium, Atomic Number 68, Atomic Mass 167" onclick="showAtomDetails(68)"><span class="atomic-number">68</span><span class="atomic-mass">167</span><span class="symbol">Er</span><span class="name">Erbium</span></td>
+                <td class="lanthanide" aria-label="Thulium, Atomic Number 69, Atomic Mass 169" onclick="showAtomDetails(69)"><span class="atomic-number">69</span><span class="atomic-mass">169</span><span class="symbol">Tm</span><span class="name">Thulium</span></td>
+                <td class="lanthanide" aria-label="Ytterbium, Atomic Number 70, Atomic Mass 173" onclick="showAtomDetails(70)"><span class="atomic-number">70</span><span class="atomic-mass">173</span><span class="symbol">Yb</span><span class="name">Ytterbium</span></td>
+                <td class="lanthanide" aria-label="Lutetium, Atomic Number 71, Atomic Mass 175" onclick="showAtomDetails(71)"><span class="atomic-number">71</span><span class="atomic-mass">175</span><span class="symbol">Lu</span><span class="name">Lutetium</span></td>
+                <td class="empty" colspan="2"></td>
+            </tr>
+            <tr>
+                <td class="empty" colspan="3">Actinides</td>
+                <td class="actinide" aria-label="Thorium, Atomic Number 90, Atomic Mass 232" onclick="showAtomDetails(90)"><span class="atomic-number">90</span><span class="atomic-mass">232</span><span class="symbol">Th</span><span class="name">Thorium</span></td>
+                <td class="actinide" aria-label="Protactinium, Atomic Number 91, Atomic Mass 231" onclick="showAtomDetails(91)"><span class="atomic-number">91</span><span class="atomic-mass">231</span><span class="symbol">Pa</span><span class="name">Protactinium</span></td>
+                <td class="actinide" aria-label="Uranium, Atomic Number 92, Atomic Mass 238" onclick="showAtomDetails(92)"><span class="atomic-number">92</span><span class="atomic-mass">238</span><span class="symbol">U</span><span class="name">Uranium</span></td>
+                <td class="actinide" aria-label="Neptunium, Atomic Number 93, Atomic Mass 237" onclick="showAtomDetails(93)"><span class="atomic-number">93</span><span class="atomic-mass">237</span><span class="symbol">Np</span><span class="name">Neptunium</span></td>
+                <td class="actinide" aria-label="Plutonium, Atomic Number 94, Atomic Mass 244" onclick="showAtomDetails(94)"><span class="atomic-number">94</span><span class="atomic-mass">244</span><span class="symbol">Pu</span><span class="name">Plutonium</span></td>
+                <td class="actinide" aria-label="Americium, Atomic Number 95, Atomic Mass 243" onclick="showAtomDetails(95)"><span class="atomic-number">95</span><span class="atomic-mass">243</span><span class="symbol">Am</span><span class="name">Americium</span></td>
+                <td class="actinide" aria-label="Curium, Atomic Number 96, Atomic Mass 247" onclick="showAtomDetails(96)"><span class="atomic-number">96</span><span class="atomic-mass">247</span><span class="symbol">Cm</span><span class="name">Curium</span></td>
+                <td class="actinide" aria-label="Berkelium, Atomic Number 97, Atomic Mass 247" onclick="showAtomDetails(97)"><span class="atomic-number">97</span><span class="atomic-mass">247</span><span class="symbol">Bk</span><span class="name">Berkelium</span></td>
+                <td class="actinide" aria-label="Californium, Atomic Number 98, Atomic Mass 251" onclick="showAtomDetails(98)"><span class="atomic-number">98</span><span class="atomic-mass">251</span><span class="symbol">Cf</span><span class="name">Californium</span></td>
+                <td class="actinide" aria-label="Einsteinium, Atomic Number 99, Atomic Mass 252" onclick="showAtomDetails(99)"><span class="atomic-number">99</span><span class="atomic-mass">252</span><span class="symbol">Es</span><span class="name">Einsteinium</span></td>
+                <td class="actinide" aria-label="Fermium, Atomic Number 100, Atomic Mass 257" onclick="showAtomDetails(100)"><span class="atomic-number">100</span><span class="atomic-mass">257</span><span class="symbol">Fm</span><span class="name">Fermium</span></td>
+                <td class="actinide" aria-label="Mendelevium, Atomic Number 101, Atomic Mass 258" onclick="showAtomDetails(101)"><span class="atomic-number">101</span><span class="atomic-mass">258</span><span class="symbol">Md</span><span class="name">Mendelevium</span></td>
+                <td class="actinide" aria-label="Nobelium, Atomic Number 102, Atomic Mass 259" onclick="showAtomDetails(102)"><span class="atomic-number">102</span><span class="atomic-mass">259</span><span class="symbol">No</span><span class="name">Nobelium</span></td>
+                <td class="actinide" aria-label="Lawrencium, Atomic Number 103, Atomic Mass 266" onclick="showAtomDetails(103)"><span class="atomic-number">103</span><span class="atomic-mass">266</span><span class="symbol">Lr</span><span class="name">Lawrencium</span></td>
+                <td class="empty" colspan="2"></td>
+            </tr>
+        </table>
+    </div>
+    <footer>
+    Data sourced from IUPAC | Atomic masses are rounded for simplicity; synthetic elements in brackets [ ].
+    <p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/">
+        <a property="dct:title" rel="cc:attributionURL" href="https://periodictable.netlify.app">Modern Periodic Table</a> by 
+        <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://rifatuzzaman-rifat.github.io/rifats">Rifatuzzaman & Urfa Hasan Fattah</a> is licensed under 
+        <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer">
+            CC BY-NC-SA 4.0
+            <img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1" alt="">
+            <img src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1" alt="">
+            <img src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1" alt="">
+            <img src="https://mirrors.creativecommons.org/presskit/icons/sa.svg?ref=chooser-v1" alt="">
+        </a>
+    </p>
+</footer>
+    
+
+
+<script>
+    function toggleMenu() {
+  const sideMenu = document.getElementById('sideMenu');
+  sideMenu.classList.toggle('open');
+  document.querySelectorAll('.dropdown-content').forEach(content => {
+    content.classList.remove('open');
+  });
+  document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
+    toggle.classList.remove('active');
+  });
+}
+
+    function toggleDropdown(button) {
+  const dropdownContent = button.nextElementSibling;
+  const isOpen = dropdownContent.classList.contains('open');
+  document.querySelectorAll('.dropdown-content').forEach(content => {
+    content.classList.remove('open');
+  });
+  document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
+    toggle.classList.remove('active');
+  });
+  if (!isOpen) {
+    dropdownContent.classList.add('open');
+    button.classList.add('active');
+  }
+}
+
+
+document.addEventListener('click', function(event) {
+  const sideMenu = document.getElementById('sideMenu');
+  const hamburger = document.querySelector('.hamburger');
+  const isMenuClick = sideMenu.contains(event.target) || hamburger.contains(event.target);
+  if (!isMenuClick && sideMenu.classList.contains('open')) {
+    sideMenu.classList.remove('open');
+    document.querySelectorAll('.dropdown-content').forEach(content => {
+      content.classList.remove('open');
+    });
+    document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
+      toggle.classList.remove('active');
+    });
+  }
+});
+
+async function showAtomDetails(atomicNumber) {
+            try {
+                const response = await fetch('atoms.json');
+                if (!response.ok) throw new Error('Failed to fetch atom data');
+                const atomsData = await response.json();
+                const atom = atomsData[atomicNumber];
+                if (!atom) {
+                    alert('Details for this element are not available.');
+                    return;
+                }
+                sessionStorage.setItem('selectedAtom', JSON.stringify(atom));
+                window.location.href = 'atom-details.html';
+            } catch (error) {
+                console.error("Error fetching atom data:", error);
+                alert('An error occurred while fetching element details.');
+            }
+        }
+        
+        
+        function debounce(func, wait) {
+  let timeout;
+  return function(...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, args), wait);
+  };
+}
+
+
+document.querySelector('#search input').addEventListener('input', debounce(function(e) {
+            const query = e.target.value.toLowerCase();
+            const elements = document.querySelectorAll('#main-table td:not(.empty)');
+            elements.forEach(element => {
+                const name = element.querySelector('.name').textContent.toLowerCase();
+                const symbol = element.querySelector('.symbol').textContent.toLowerCase();
+                const atomicNumber = element.querySelector('.atomic-number').textContent;
+                const contents = element.querySelectorAll('.atomic-number, .atomic-mass, .symbol, .name');
+                if (name.includes(query) || symbol.includes(query) || atomicNumber === query) {
+                    contents.forEach(content => content.style.opacity = '1');
+                    element.style.background = element.classList[0] ? '' : 'rgba(255, 255, 255, 0.1)';
+                    element.style.cursor = 'pointer';
+                } else {
+                    contents.forEach(content => content.style.opacity = '0');
+                    element.style.background = 'transparent';
+                    element.style.cursor = 'default';
+                }
+            });
+        }, 300));
+
+
+
+
+    function filterElements(category) {
+        const elements = document.querySelectorAll('#main-table td:not(.empty)');
+        const filterIndicator = document.getElementById('filter-indicator');
+
+        // Map filter categories to display names and counts
+        const filterMap = {
+            'all': 'All Elements (118)',
+            'gas': 'Gases (11)',
+            'noble-gas': 'Noble Gases (6)',
+            'chalcogen': 'Chalcogens (6)',
+            'pnictogen': 'Pnictogens (6)',
+            'solid': 'Solids (103)',
+            'liquid': 'Liquids (2)',
+            'radioactive': 'Radioactive Elements (38)',
+            'metal': 'Metals (91)',
+            'nonmetal': 'Non-Metals (17)',
+            'semiconductor': 'Semiconductors (7)',
+            's-block': 's-block Elements (12)',
+            'p-block': 'p-block Elements (35)',
+            'd-block': 'd-block Elements (40)',
+            'f-block': 'f-block Elements (31)',
+            'alkali-metal': 'Alkali Metals (6)',
+            'alkaline-earth': 'Alkaline Earth Metals (6)',
+            'synthetic': 'Synthetic Elements (26)',
+            'reactive': 'Highly Reactive Elements (11)',
+            'essential': 'Essential Elements (10)',
+            'magnetic': 'Magnetic Elements (4)',
+            'rare-earth': 'Rare Earth Elements (17)',
+            'halogen': 'Halogens (6)',
+            'multi-oxidation': 'Elements with Multiple Oxidation States (7)'
+        };
+
+        // Set the indicator text
+        filterIndicator.textContent = `Showing: ${filterMap[category] || 'All Elements (118)'}`;
+
+        elements.forEach(element => {
+            const atomicNumber = parseInt(element.querySelector('.atomic-number').textContent);
+            const contents = element.querySelectorAll('.atomic-number, .atomic-mass, .symbol, .name');
+            let isMatch = false;
+            switch (category) {
+                case 'all': isMatch = true; break;
+                case 'gas': isMatch = [1, 2, 7, 8, 9, 10, 17, 18, 36, 54, 86].includes(atomicNumber); break;
+                case 'noble-gas': isMatch = element.classList.contains('noble-gas'); break;
+                case 'chalcogen': isMatch = [8, 16, 34, 52, 84, 116].includes(atomicNumber); break;
+                case 'pnictogen': isMatch = [7, 15, 33, 51, 83, 115].includes(atomicNumber); break;
+                case 'solid': isMatch = ![1, 2, 7, 8, 9, 10, 17, 18, 35, 36, 54, 80, 86].includes(atomicNumber); break;
+                case 'liquid': isMatch = [35, 80].includes(atomicNumber); break;
+                case 'radioactive': isMatch = [43, 61, 84, 85, 86, 87, 88].includes(atomicNumber) || atomicNumber >= 89; break;
+                case 'metal': isMatch = element.classList.contains('alkali-metal') || element.classList.contains('alkaline-earth') || element.classList.contains('transition-metal') || element.classList.contains('post-transition') || element.classList.contains('lanthanide') || element.classList.contains('actinide'); break;
+                case 'nonmetal': isMatch = element.classList.contains('nonmetal'); break;
+                case 'semiconductor': isMatch = element.classList.contains('metalloid'); break;
+                case 's-block': isMatch = element.classList.contains('alkali-metal') || element.classList.contains('alkaline-earth'); break;
+                case 'p-block': isMatch = element.classList.contains('post-transition') || element.classList.contains('metalloid') || element.classList.contains('nonmetal') || element.classList.contains('noble-gas'); break;
+                case 'd-block': isMatch = element.classList.contains('transition-metal'); break;
+                case 'f-block': isMatch = element.classList.contains('lanthanide') || element.classList.contains('actinide'); break;
+                case 'alkali-metal': isMatch = element.classList.contains('alkali-metal'); break;
+                case 'alkaline-earth': isMatch = element.classList.contains('alkaline-earth'); break;
+                case 'synthetic': isMatch = [43, 61].includes(atomicNumber) || atomicNumber >= 93; break;
+                case 'reactive': isMatch = [1, 3, 9, 11, 17, 19, 35, 37, 53, 55, 87].includes(atomicNumber); break;
+                case 'essential': isMatch = [1, 6, 7, 8, 11, 12, 15, 16, 19, 20].includes(atomicNumber); break;
+                case 'magnetic': isMatch = [26, 27, 28, 64].includes(atomicNumber); break;
+                case 'rare-earth': isMatch = [21, 39].includes(atomicNumber) || (atomicNumber >= 58 && atomicNumber <= 71); break;
+                case 'halogen': isMatch = [9, 17, 35, 53, 85, 117].includes(atomicNumber); break;
+                case 'multi-oxidation': isMatch = [24, 25, 26, 27, 29, 42, 74].includes(atomicNumber); break;
+                default: isMatch = true;
+            }
+            if (isMatch) {
+                contents.forEach(content => content.style.opacity = '1');
+                element.style.background = element.classList[0] ? '' : 'rgba(255, 255, 255, 0.1)';
+                element.style.cursor = 'pointer';
+            } else {
+                contents.forEach(content => content.style.opacity = '0');
+                element.style.background = 'transparent';
+                element.style.cursor = 'default';
+            }
+        });
+        toggleMenu(); // Close the menu after selection
+    }
+
+    // Navbar hide/show on scroll
+    let lastScrollTop = 0;
+    const navbar = document.querySelector('.navbar');
+    window.addEventListener('scroll', () => {
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        if (scrollTop > lastScrollTop) {
+            navbar.classList.add('hidden');
+        } else {
+            navbar.classList.remove('hidden');
+        }
+        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+    });
+
+   
+</script>
+
+
+
+</body>
+</html>

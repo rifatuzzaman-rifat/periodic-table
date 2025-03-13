@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atom Details</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Montserrat:wght@800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            animation: fadeIn 0.6s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        .symbol {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 80px;
+            font-weight: 800;
+            color: #00e676;
+            margin-right: 20px;
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 50px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin: 0;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+        .atom-image {
+            max-width: 200px;
+            max-height: 200px; /* Added to prevent overflow */
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            margin: 20px auto;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+        .atom-image:hover {
+            transform: scale(1.05);
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        .info-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .info-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+        .info-card h3 {
+            font-size: 22px;
+            margin: 0 0 15px;
+            color: #00e676;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .info-card p {
+            margin: 8px 0;
+            font-size: 16px;
+            line-height: 1.4;
+        }
+        .icon {
+            margin-right: 12px;
+            color: #ff4081;
+        }
+        .description {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 25px;
+            border-radius: 12px;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        .description h3 {
+            color: #00e676;
+            margin: 0 0 10px;
+        }
+        button {
+            display: block;
+            margin: 0 auto;
+            padding: 15px 30px;
+            font-size: 18px;
+            background: #ff4081;
+            border: none;
+            border-radius: 30px;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+        button:hover {
+            background: #e91e63;
+            transform: scale(1.1);
+        }
+        .error-message {
+            text-align: center;
+            font-size: 20px;
+            color: #ff4081;
+            margin: 20px 0;
+        }
+        
+        /* Temperature Toggle Button */
+.temp-toggle {
+    display: inline-block;
+    padding: 5px 10px;
+    font-size: 12px;
+    background: #00e676;
+    border: none;
+    border-radius: 15px;
+    color: white;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+.temp-toggle:hover {
+    background: #00c853;
+    transform: scale(1.05);
+}
+
+/* Bohr Model Section */
+.bohr-section img {
+    max-width: 200px;
+    height: auto;
+    margin: 10px auto;
+    display: block;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+}
+.bohr-section img:hover {
+    transform: scale(1.05);
+}
+
+/* Fun Fact Section */
+.fun-fact-section {
+    background: rgba(255, 255, 0, 0.1); /* Slight yellow tint for distinction */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .temp-toggle { font-size: 10px; padding: 4px 8px; }
+    .bohr-section img { max-width: 150px; }
+}
+@media (max-width: 480px) {
+    .temp-toggle { font-size: 9px; padding: 3px 6px; }
+    .bohr-section img { max-width: 120px; }
+}
+        
+        /* Group-specific colors for the atom name */
+        .alkali-metal { color: #ff6b6b; }
+        .alkaline-earth { color: #ffb86c; }
+        .transition-metal { color: #64c8ff; }
+        .post-transition { color: #96ff96; }
+        .metalloid { color: #c896ff; }
+        .nonmetal { color: #ffff64; }
+        .noble-gas { color: #64ffff; }
+        .lanthanide { color: #ff96c8; }
+        .actinide { color: #c864ff; }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container { padding: 20px; }
+            h1 { font-size: 36px; }
+            .symbol { font-size: 50px; }
+            .info-grid { grid-template-columns: 1fr; }
+            .atom-image { max-width: 150px; max-height: 150px; }
+        }
+        @media (max-width: 480px) {
+            h1 { font-size: 28px; }
+            .symbol { font-size: 40px; }
+            .info-card { padding: 15px; }
+            .info-card h3 { font-size: 18px; }
+            .info-card p { font-size: 14px; }
+            .atom-image { max-width: 120px; max-height: 120px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <span class="symbol" id="atom-symbol"></span>
+            <h1 id="atom-name"></h1>
+        </div>
+        <img id="atom-image" src="" alt="Atom Image" style="display: none;">
+        <div class="info-grid">
+            <div class="info-card">
+                <h3>Basic Info</h3>
+                <p><i class="fas fa-atom icon"></i><strong>Atomic Number:</strong> <span id="atom-number"></span></p>
+                <p><i class="fas fa-weight-hanging icon"></i><strong>Atomic Mass:</strong> <span id="atom-mass"></span></p>
+                <p><i class="fas fa-layer-group icon"></i><strong>Group:</strong> <span id="atom-group"></span></p>
+                <p><i class="fas fa-table icon"></i><strong>Period:</strong> <span id="atom-period"></span></p>
+                <p><i class="fas fa-cube icon"></i><strong>Block:</strong> <span id="atom-block"></span></p>
+                <p><i class="fas fa-orbit icon"></i><strong>Electron Configuration:</strong> <span id="electron-config"></span></p>
+            </div>
+            <div class="info-card">
+                <h3>Physical Properties</h3>
+                <p><i class="fas fa-thermometer-half icon"></i><strong>Melting Point:</strong> <span id="melting-point"></span> <span id="temp-unit-melting">°C</span> <button class="temp-toggle" onclick="toggleTemp('melting')">Toggle Unit</button></p>
+                <p><i class="fas fa-fire icon"></i><strong>Boiling Point:</strong> <span id="boiling-point"></span> <span id="temp-unit-boiling">°C</span> <button class="temp-toggle" onclick="toggleTemp('boiling')">Toggle Unit</button></p>
+                <p><i class="fas fa-cubes icon"></i><strong>Density:</strong> <span id="density"></span> g/cm³</p>
+                <p><i class="fas fa-gem icon"></i><strong>Crystal Structure:</strong> <span id="crystal-structure"></span></p>
+                <p><i class="fas fa-tint icon"></i><strong>Appearance:</strong> <span id="appearance"></span></p>
+            </div>
+            <div class="info-card">
+                <h3>Chemical Properties</h3>
+                <p><i class="fas fa-bolt icon"></i><strong>Electronegativity:</strong> <span id="electronegativity"></span></p>
+                <p><i class="fas fa-charging-station icon"></i><strong>Ionization Energy:</strong> <span id="ionization-energy"></span> eV</p>
+                <p><i class="fas fa-ruler icon"></i><strong>Atomic Radius:</strong> <span id="atomic-radius"></span> pm</p>
+                <p><i class="fas fa-flask icon"></i><strong>Oxidation States:</strong> <span id="oxidation-states"></span></p>
+            </div>
+            <div class="info-card">
+                <h3>Discovery & Origin</h3>
+                <p><i class="fas fa-calendar-alt icon"></i><strong>Year:</strong> <span id="discovery-year"></span></p>
+                <p><i class="fas fa-user icon"></i><strong>Discoverer:</strong> <span id="discoverer"></span></p>
+                <p><i class="fas fa-book icon"></i><strong>Name Origin:</strong> <span id="name-origin"></span></p>
+            </div>
+        </div>
+        <div class="description">
+            <h3>Uses</h3>
+            <p id="uses"></p>
+            <h3>Description</h3>
+            <p id="atom-description"></p>
+            <h3>Abundance</h3>
+            <p id="abundance"></p>
+        </div>
+        <div class="description bohr-section">
+            <h3>Bohr Model</h3>
+            <img id="bohr-image" src="" alt="Bohr Model" style="display: none;">
+            <p id="bohr-description">A simplified representation of the atom's electron shells.</p>
+        </div>
+        <div class="description fun-fact-section">
+            <h3>Fun Fact</h3>
+            <p id="fun-fact"></p>
+        </div>
+        <div class="description">
+            <h3>Learn More</h3>
+            <p><a id="external-link" href="#" target="_blank" style="color: #00e676; text-decoration: none;">Explore more about this element</a></p>
+        </div>
+        <button onclick="window.location.href='index.html'">Back to Periodic Table</button>
+    </div>
+
+   <script>
+    // Store original temperature values for toggling
+    let meltingPointCelsius, boilingPointCelsius;
+
+    try {
+        const atom = JSON.parse(sessionStorage.getItem('selectedAtom'));
+        if (atom && typeof atom === 'object') {
+            // Apply group-specific color
+            if (atom.group) {
+                document.getElementById('atom-name').classList.add(atom.group.toLowerCase().replace(' ', '-'));
+            }
+
+            // Populate fields with fallbacks
+            document.getElementById('atom-name').textContent = atom.name || 'Unknown Atom';
+            document.getElementById('atom-symbol').textContent = atom.symbol || 'N/A';
+            document.getElementById('atom-number').textContent = atom.atomicNumber || 'N/A';
+            document.getElementById('atom-mass').textContent = atom.atomicMass || 'N/A';
+            document.getElementById('atom-group').textContent = atom.group || 'N/A';
+            document.getElementById('atom-period').textContent = atom.period || 'N/A';
+            document.getElementById('atom-block').textContent = atom.block || 'N/A';
+            document.getElementById('electron-config').textContent = atom.electronConfiguration || 'N/A';
+            
+            // Store original Celsius values for toggling
+            meltingPointCelsius = atom.meltingPoint;
+            boilingPointCelsius = atom.boilingPoint;
+            document.getElementById('melting-point').textContent = atom.meltingPoint || 'N/A';
+            document.getElementById('boiling-point').textContent = atom.boilingPoint || 'N/A';
+            
+            document.getElementById('density').textContent = atom.density || 'N/A';
+            document.getElementById('crystal-structure').textContent = atom.crystalStructure || 'N/A';
+            document.getElementById('appearance').textContent = atom.appearance || 'N/A';
+            document.getElementById('electronegativity').textContent = atom.electronegativity || 'N/A';
+            document.getElementById('ionization-energy').textContent = atom.ionizationEnergy || 'N/A';
+            document.getElementById('atomic-radius').textContent = atom.atomicRadius || 'N/A';
+            document.getElementById('oxidation-states').textContent = atom.oxidationStates || 'N/A';
+            document.getElementById('discovery-year').textContent = atom.discoveryYear || 'N/A';
+            document.getElementById('discoverer').textContent = atom.discoverer || 'N/A';
+            document.getElementById('name-origin').textContent = atom.nameOrigin || 'N/A';
+            document.getElementById('uses').textContent = atom.uses || 'No specific uses listed.';
+            document.getElementById('atom-description').textContent = atom.description || 'No description available.';
+            document.getElementById('abundance').textContent = atom.abundance || 'No abundance data available.';
+            document.getElementById('fun-fact').textContent = atom.funFact || 'No fun fact available.';
+            
+            // Bohr Model Image
+            const bohrImg = document.getElementById('bohr-image');
+            if (atom.bohrImage) {
+                bohrImg.src = atom.bohrImage;
+                bohrImg.alt = `${atom.name || 'Atom'} Bohr Model`;
+                bohrImg.style.display = 'block';
+                bohrImg.onerror = () => {
+                    bohrImg.style.display = 'none';
+                    console.warn(`Failed to load Bohr model for ${atom.name || 'atom'}: ${atom.bohrImage}`);
+                };
+            }
+
+            // External Link
+            const externalLink = document.getElementById('external-link');
+            if (atom.externalLink) {
+                externalLink.href = atom.externalLink;
+                externalLink.textContent = `Explore more about ${atom.name || 'this element'}`;
+            } else {
+                externalLink.textContent = 'No external link available.';
+                externalLink.style.pointerEvents = 'none';
+            }
+
+            // Atom Image
+            const imgElement = document.getElementById('atom-image');
+            if (atom.image) {
+                imgElement.src = atom.image;
+                imgElement.alt = `${atom.name || 'Atom'} Image`;
+                imgElement.style.display = 'block';
+                imgElement.onerror = () => {
+                    imgElement.style.display = 'none';
+                    console.warn(`Failed to load image for ${atom.name || 'atom'}: ${atom.image}`);
+                };
+            }
+        } else {
+            document.querySelector('.container').innerHTML = `
+                <div class="error-message">
+                    <h1>Error: No atom data found</h1>
+                    <p>Atom details could not be loaded. Please try again.</p>
+                </div>
+            `;
+        }
+    } catch (error) {
+        console.error('Error processing atom data:', error);
+        document.querySelector('.container').innerHTML = `
+            <div class="error-message">
+                <h1>Error: Data Processing Failed</h1>
+                <p>An error occurred while loading the atom details: ${error.message}</p>
+            </div>
+        `;
+    }
+
+    // Temperature Toggle Function
+    function toggleTemp(type) {
+        const meltingElement = document.getElementById('melting-point');
+        const boilingElement = document.getElementById('boiling-point');
+        const meltingUnit = document.getElementById('temp-unit-melting');
+        const boilingUnit = document.getElementById('temp-unit-boiling');
+
+        if (type === 'melting' && meltingPointCelsius !== undefined) {
+            const currentUnit = meltingUnit.textContent;
+            if (currentUnit === '°C') {
+                meltingElement.textContent = (parseFloat(meltingPointCelsius) + 273.15).toFixed(2);
+                meltingUnit.textContent = 'K';
+            } else {
+                meltingElement.textContent = meltingPointCelsius;
+                meltingUnit.textContent = '°C';
+            }
+        } else if (type === 'boiling' && boilingPointCelsius !== undefined) {
+            const currentUnit = boilingUnit.textContent;
+            if (currentUnit === '°C') {
+                boilingElement.textContent = (parseFloat(boilingPointCelsius) + 273.15).toFixed(2);
+                boilingUnit.textContent = 'K';
+            } else {
+                boilingElement.textContent = boilingPointCelsius;
+                boilingUnit.textContent = '°C';
+            }
+        }
+    }
+</script>
+</body>
+</html>
